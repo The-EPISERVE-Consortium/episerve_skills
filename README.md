@@ -17,12 +17,68 @@ or fixes something has its own skill with its own "only when asked" gate.
 
 ## Requirements
 
-The skills drive two CLIs; install them from the releases of
-[`episerve_client`](https://github.com/The-EPISERVE-Consortium/episerve_client) (`episerve`, v0.1.14 or newer for benchmarks)
-and [`episerve_doip_server`](https://github.com/The-EPISERVE-Consortium/episerve_doip_server)
-(`episerve-doip-cli`, v0.0.5 or newer) and set the environment variables the skills list
-(`EPISERVE_API_URL`, `EPISERVE_CKAN_URL`, `EPISERVE_DOIP_URL`, `EPISERVE_API_KEY`,
-`DOIP_HOST`, `DOIP_PORT`, `DOIP_UPDATE_TOKEN`).
+The skills do not talk to the platform themselves; they drive two command-line tools. The agent
+runs them in its own shell, so they must be installed **and on the `PATH`** under the names the
+skills use (`episerve`, `episerve-doip-cli`), and the environment variables below must be set in the
+shell the agent starts from. Without them the skills just report what is missing.
+
+### 1. Install the CLIs
+
+Download the binary for your system from the latest release, rename it and put it on your `PATH`.
+
+| Tool | Needed by | Release | Linux | macOS | Windows |
+|---|---|---|---|---|---|
+| `episerve` (v0.1.14+ for benchmarks) | `episerve-data-access`, `episerve-model-runs`, `episerve-benchmarks` | [`episerve_client`](https://github.com/The-EPISERVE-Consortium/episerve_client/releases/latest) | `episerve-client-linux` | `episerve-client-macos` | `episerve-client-windows.exe` |
+| `episerve-doip-cli` (v0.0.5+) | `doip-fdo-access` | [`episerve_doip_server`](https://github.com/The-EPISERVE-Consortium/episerve_doip_server/releases/latest) | `episerve-doip-cli-linux` | `episerve-doip-cli-macos` | `episerve-doip-cli-windows.exe` |
+
+Linux / macOS:
+```bash
+curl -fsSL -o ~/.local/bin/episerve https://github.com/The-EPISERVE-Consortium/episerve_client/releases/latest/download/episerve-client-linux   # -macos on a Mac
+curl -fsSL -o ~/.local/bin/episerve-doip-cli https://github.com/The-EPISERVE-Consortium/episerve_doip_server/releases/latest/download/episerve-doip-cli-linux   # -macos on a Mac
+chmod +x ~/.local/bin/episerve ~/.local/bin/episerve-doip-cli      # ~/.local/bin must be on PATH
+```
+
+Windows (PowerShell): download the two `.exe` files, rename them to `episerve.exe` and
+`episerve-doip-cli.exe`, put them in a folder on your `PATH` (e.g. `%USERPROFILE%\bin`), and open a new terminal.
+
+### 2. Set the environment variables
+
+Only the variables of the skills you use are needed.
+
+| Variable | Used by | Meaning |
+|---|---|---|
+| `EPISERVE_API_URL` | data-access, model-runs, benchmarks | API server base URL |
+| `EPISERVE_CKAN_URL` | data-access | CKAN base URL (`item show`) |
+| `EPISERVE_DOIP_URL` | data-access, model-runs | DOIP HTTP gateway base URL (list / download components) |
+| `EPISERVE_API_KEY` | model-runs, benchmarks (writes) | Bearer token, **valid for one day** (`episerve login`); not needed for reads |
+| `DOIP_HOST`, `DOIP_PORT` (`3567`) | doip-fdo-access | native DOIP server |
+| `DOIP_UPDATE_TOKEN` | doip-fdo-access (`update` only) | write token |
+
+Linux / macOS: `export EPISERVE_API_URL=https://...` (put it in `~/.bashrc` / `~/.zshrc` to keep it).
+Windows PowerShell: `$env:EPISERVE_API_URL = "https://..."` for the current session, or
+`setx EPISERVE_API_URL "https://..."` to keep it (takes effect in new terminals).
+Set them **before** starting the agent (Claude Code, Codex, ...), otherwise it will not see them.
+
+### 3. Check that it works
+
+These commands are the same in every shell; run them yourself or ask the agent to:
+
+```
+episerve --cli-version        # installed and on PATH; prints the version
+episerve health               # API URL set and reachable
+episerve benchmark -h         # fails if the client is older than v0.1.14
+episerve-doip-cli --help      # DOIP CLI installed
+```
+
+`command not found` / `is not recognized` means the binary is not on the `PATH` (or has a different
+name); an error that lists `EPISERVE_API_URL=...` means that variable is not set in the shell the
+agent was started from.
+
+### Notes on shells
+
+The command examples inside the skills are written for a POSIX shell (`\` line continuation,
+`$VAR`, `jq`, `ls -la`). On Windows, agents usually translate them (PowerShell uses `` ` ``
+for continuation and `$env:VAR`); if you want fewer surprises, run the agent in WSL or Git Bash.
 
 ## Install
 
