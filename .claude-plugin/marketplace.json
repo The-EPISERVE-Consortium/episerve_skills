@@ -1,0 +1,11 @@
+{
+  "name": "episerve",
+  "owner": {"name": "EPISERVE Consortium"},
+  "plugins": [
+    {
+      "name": "episerve-skills",
+      "source": "./",
+      "description": "Agent skills for reaching the EPISERVE platform: catalog/API access and native DOIP/FDO operations."
+    }
+  ]
+}
