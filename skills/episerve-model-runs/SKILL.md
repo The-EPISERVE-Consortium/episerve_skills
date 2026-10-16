@@ -22,7 +22,9 @@ episerve list datasets    # dataset QIDs and their DOIP links
 ```
 
 Take the model image and the input from these listings -- never invent a QID
-or an image name. To run on a **benchmark's** pinned data, take the input and
+or an image name. Each model lists its parameters in `additional_properties`
+(`name`, `valueRequired`, `minValue`, `maxValue`, `value` = default); see
+"The config" below. To run on a **benchmark's** pinned data, take the input and
 SQL from `episerve benchmark run-spec <id>` instead (see
 `episerve-benchmarks`) and keep them unchanged.
 
@@ -46,8 +48,29 @@ episerve trigger-model-run '{
 (the argument is an inline JSON string or a path to a JSON file). `model_image`,
 `input_data_files` (a list of `[source_uri, target_filename]` pairs), and `config`
 (a JSON object -- the API serializes it to `config_json` for the flow) are
-required; `model_tag` and `data_transformation_sql` are optional. Which config
-keys a model accepts is declared by the model itself; don't guess them.
+required; `model_tag` and `data_transformation_sql` are optional.
+
+### The config
+
+`config` must contain **every parameter the model marks `valueRequired: true`**
+(the `value` shown for it is not a default -- it is typically `null`), within its
+`minValue` / `maxValue`. Read them before building the request:
+
+```bash
+episerve --raw list models      # find the model, read its additional_properties
+```
+
+Typical generic forecast models require `history_length` (rows of context) and
+`prediction_length`; others use different names (e.g. `horizon_weeks`), so don't
+assume. `episerve benchmark run-spec` fills only `prediction_length` and
+`prediction_offset` -- add the model's other required keys yourself (for
+`history_length` the number of rows in the input after the transformation SQL).
+
+The API server rejects a config that misses a required key or breaks a bound with
+`422` and lists every violation (`Invalid model config: ...`); fix the config
+and send it again. Servers without that check accept the run and the model
+container fails it a few seconds later with `config.json missing required key:
+'<name>'` -- the same fix applies.
 
 It returns `202` with a `run_id` (the Prefect flow-run UUID). Confirm a real
 `run_id` came back (not an error) before claiming success, and state it
@@ -66,8 +89,11 @@ episerve run show Q<qid>    # status, timestamps, computation time, in/outputs o
 ```
 
 Don't poll in a tight loop; if the run isn't listed yet, say so and check
-again later. If a run's status is not `success`, report the status as shown
--- don't guess a cause.
+again later. A run is registered when it ends, **whatever its outcome**: a
+failed run appears in `list runs` with status `failed` (and only `success` runs
+can be added to a benchmark). If a run's status is not `success`, report the
+status as shown -- don't guess a cause; the reason is in the run's
+`output/run.log`, which you can download with `item download`.
 
 ## Fetch the result
 

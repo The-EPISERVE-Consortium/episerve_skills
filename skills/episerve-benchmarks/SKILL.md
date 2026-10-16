@@ -48,7 +48,10 @@ request but lacks the model.
 2. Add `model_image` (and `model_tag`) and the model's own `config` keys to
    `spec.json`, keeping the benchmark's `input_data_files` and
    `data_transformation_sql` **unchanged** -- the input must be read at the
-   pinned commit or the run is refused later.
+   pinned commit or the run is refused later. `run-spec` fills only
+   `prediction_length` and `prediction_offset`; the model's other required keys
+   (commonly `history_length`: the number of input rows after the SQL) are yours
+   to add -- see "The config" in `episerve-model-runs`.
 3. `episerve trigger-model-run spec.json` (a real cluster job -- only when the
    request asks; see `episerve-model-runs`). Wait for the run to finish
    and note its run QID.
