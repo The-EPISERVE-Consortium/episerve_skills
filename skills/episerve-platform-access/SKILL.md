@@ -29,6 +29,7 @@ operation:
 | Trigger a model run | **this skill** (only option) |
 | Get an item's **CKAN catalog record** | **this skill** (only option) |
 | List an FDO's components / download a component **at its latest version** | **this skill** -- HTTP, streamed, handles large files |
+| List benchmarks, read a leaderboard, add a run to a leaderboard, design a benchmark | **`episerve-benchmarks`** -- it also covers running a model on a benchmark's pinned data |
 | Download a component **at a specific commit**; list an object's **version history**; **write/replace** a component; **invoke** a server-side workflow; `hello`/`list_ops`; purge the manifest cache | **`doip-fdo-access`** -- those exist only over the native DOIP protocol |
 
 If a task needs both (e.g. "list the runs, then fetch run Q...'s output at

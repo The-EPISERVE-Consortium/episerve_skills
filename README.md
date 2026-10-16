@@ -8,12 +8,13 @@ Codex, pi and other agents that read `SKILL.md`.
 | Skill | Use it to |
 |---|---|
 | [`episerve-platform-access`](skills/episerve-platform-access/SKILL.md) | check platform health, list datasets / models / model runs, read a CKAN record, download a component (latest version), trigger a model run — via the `episerve` CLI |
+| [`episerve-benchmarks`](skills/episerve-benchmarks/SKILL.md) | list benchmarks, read leaderboards, get the run spec, add a model run to a leaderboard, design and finalize benchmarks — via `episerve benchmark …` (client v0.1.14 or newer) |
 | [`doip-fdo-access`](skills/doip-fdo-access/SKILL.md) | native DOIP 2.0 operations on an FDO: version history, version-pinned retrieve, update, invoke, purge — via `episerve-doip-cli` |
 
 ## Requirements
 
 The skills drive two CLIs; install them from the releases of
-[`episerve_client`](https://github.com/The-EPISERVE-Consortium/episerve_client) (`episerve`)
+[`episerve_client`](https://github.com/The-EPISERVE-Consortium/episerve_client) (`episerve`, v0.1.14 or newer for benchmarks)
 and [`episerve_doip_server`](https://github.com/The-EPISERVE-Consortium/episerve_doip_server)
 (`episerve-doip-cli`, v0.0.5 or newer) and set the environment variables the skills list
 (`EPISERVE_API_URL`, `EPISERVE_CKAN_URL`, `EPISERVE_DOIP_URL`, `EPISERVE_API_KEY`,
