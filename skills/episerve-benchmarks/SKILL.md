@@ -12,8 +12,8 @@ range** (what a model may see) and a **reference range** (`test_start` ..
 the data once it is final. A model run made from it is an **entry**: scored
 once when added, then ranked on the benchmark's **leaderboard**.
 
-This skill uses the `episerve` CLI (client release v0.1.14 or newer -- older
-releases have no `benchmark` command; check with `episerve benchmark -h`).
+This skill uses the latest `episerve` CLI release. If `episerve benchmark -h`
+fails, the installed client is outdated -- say so and ask for an update rather	han working around it.
 Connection variables and the daily-rotating `EPISERVE_API_KEY` are the same as
 in `episerve-data-access`; read that skill for `list` and `item`, and
 `episerve-model-runs` for starting a run.

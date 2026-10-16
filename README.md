@@ -9,7 +9,7 @@ Codex, pi and other agents that read `SKILL.md`.
 |---|---|---|
 | [`episerve-data-access`](skills/episerve-data-access/SKILL.md) | check health, list datasets / models / runs, read a CKAN record, list and download components (latest version) — `episerve` CLI | read-only |
 | [`episerve-model-runs`](skills/episerve-model-runs/SKILL.md) | start a forecast model run, follow its status, fetch the predictions — `episerve trigger-model-run`, `list runs`, `run show` | uses cluster resources, not undoable |
-| [`episerve-benchmarks`](skills/episerve-benchmarks/SKILL.md) | list benchmarks, read leaderboards, get the run spec, add a run to a leaderboard, design and finalize benchmarks — `episerve benchmark …` (client v0.1.14 or newer) | writes; `finalize` is irreversible |
+| [`episerve-benchmarks`](skills/episerve-benchmarks/SKILL.md) | list benchmarks, read leaderboards, get the run spec, add a run to a leaderboard, design and finalize benchmarks — `episerve benchmark …` | writes; `finalize` is irreversible |
 | [`doip-fdo-access`](skills/doip-fdo-access/SKILL.md) | native DOIP 2.0 operations on an FDO: version history, version-pinned retrieve, update, invoke, purge — `episerve-doip-cli` | writes to live FDOs |
 
 The skills are split by task and risk: finding and fetching is read-only, everything that starts
@@ -24,12 +24,12 @@ shell the agent starts from. Without them the skills just report what is missing
 
 ### 1. Install the CLIs
 
-Download the binary for your system from the latest release, rename it and put it on your `PATH`.
+Download the binary for your system from the **latest** release (always use the latest), rename it and put it on your `PATH`.
 
 | Tool | Needed by | Release | Linux | macOS | Windows |
 |---|---|---|---|---|---|
-| `episerve` (v0.1.14+ for benchmarks) | `episerve-data-access`, `episerve-model-runs`, `episerve-benchmarks` | [`episerve_client`](https://github.com/The-EPISERVE-Consortium/episerve_client/releases/latest) | `episerve-client-linux` | `episerve-client-macos` | `episerve-client-windows.exe` |
-| `episerve-doip-cli` (v0.0.5+) | `doip-fdo-access` | [`episerve_doip_server`](https://github.com/The-EPISERVE-Consortium/episerve_doip_server/releases/latest) | `episerve-doip-cli-linux` | `episerve-doip-cli-macos` | `episerve-doip-cli-windows.exe` |
+| `episerve` | `episerve-data-access`, `episerve-model-runs`, `episerve-benchmarks` | [`episerve_client`](https://github.com/The-EPISERVE-Consortium/episerve_client/releases/latest) | `episerve-client-linux` | `episerve-client-macos` | `episerve-client-windows.exe` |
+| `episerve-doip-cli` | `doip-fdo-access` | [`episerve_doip_server`](https://github.com/The-EPISERVE-Consortium/episerve_doip_server/releases/latest) | `episerve-doip-cli-linux` | `episerve-doip-cli-macos` | `episerve-doip-cli-windows.exe` |
 
 Linux / macOS:
 ```bash
@@ -66,7 +66,7 @@ These commands are the same in every shell; run them yourself or ask the agent t
 ```
 episerve --cli-version        # installed and on PATH; prints the version
 episerve health               # API URL set and reachable
-episerve benchmark -h         # fails if the client is older than v0.1.14
+episerve benchmark -h         # fails if the client is outdated: install the latest release
 episerve-doip-cli --help      # DOIP CLI installed
 ```
 
@@ -107,4 +107,4 @@ delivery, blackboard, anything needing the ZIB-internal Prefect server) stay in
 ```bash
 pytest tests/        # frontmatter, name == directory, no secrets
 ```
-Release by tagging (`v0.1.0`); consumers pin the tag.
+Consumers (e.g. the EPISERVE task runner image) take `main`.

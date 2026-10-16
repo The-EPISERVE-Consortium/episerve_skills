@@ -7,7 +7,7 @@ description: Use only when the request explicitly asks for a native DOIP-protoco
 
 Drive a running EPISERVE **DOIP server** over its native binary DOIP 2.0
 protocol, using the `episerve-doip-cli` binary (a static binary from the
-`episerve_doip_server` release, v0.0.5 or newer for `--force-json-output`).
+`episerve_doip_server` release; use the latest release).
 The server is already running -- this skill only sends it requests.
 
 Only act if the request explicitly asks for one of the operations below. If
