@@ -1,6 +1,6 @@
 ---
 name: episerve-benchmarks
-description: Use only when the request explicitly asks about EPISERVE benchmarks -- list or show benchmarks, read a leaderboard, get the run spec to run a model on a benchmark's pinned data, add a finished model run to a leaderboard, or design (create, check, finalize, copy, retire) a benchmark. Not triggered by default; for plain catalog queries and triggering model runs use episerve-platform-access.
+description: Use only when the request explicitly asks about EPISERVE benchmarks -- list or show benchmarks, read a leaderboard, get the run spec to run a model on a benchmark's pinned data, add a finished model run to a leaderboard, or design (create, check, finalize, copy, retire) a benchmark. Not triggered by default; for plain catalog queries use episerve-data-access and for starting a model run episerve-model-runs.
 ---
 
 # EPISERVE benchmarks
@@ -15,8 +15,8 @@ once when added, then ranked on the benchmark's **leaderboard**.
 This skill uses the `episerve` CLI (client release v0.1.14 or newer -- older
 releases have no `benchmark` command; check with `episerve benchmark -h`).
 Connection variables and the daily-rotating `EPISERVE_API_KEY` are the same as
-in `episerve-platform-access`; read that skill for `list`, `item` and
-`trigger-model-run`.
+in `episerve-data-access`; read that skill for `list` and `item`, and
+`episerve-model-runs` for starting a run.
 
 Only act if the request explicitly asks. Reading is harmless; every write
 below is only done when the request says so.
@@ -50,7 +50,7 @@ request but lacks the model.
    `data_transformation_sql` **unchanged** -- the input must be read at the
    pinned commit or the run is refused later.
 3. `episerve trigger-model-run spec.json` (a real cluster job -- only when the
-   request asks; see `episerve-platform-access`). Wait for the run to finish
+   request asks; see `episerve-model-runs`). Wait for the run to finish
    and note its run QID.
 4. `episerve benchmark add-entry <id> <run-QID>` (needs a token).
 

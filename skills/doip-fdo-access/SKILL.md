@@ -1,6 +1,6 @@
 ---
 name: doip-fdo-access
-description: Use only when the request explicitly asks for a native DOIP-protocol operation on an FDO -- list an object's version history, retrieve a component at a specific commit, write/replace a component, invoke a server-side DOIP workflow, or purge the server's manifest cache. For platform catalog queries, CKAN records, and latest-version component downloads, use episerve-platform-access instead. Not triggered by default.
+description: Use only when the request explicitly asks for a native DOIP-protocol operation on an FDO -- list an object's version history, retrieve a component at a specific commit, write/replace a component, invoke a server-side DOIP workflow, or purge the server's manifest cache. For platform catalog queries, CKAN records, and latest-version component downloads, use episerve-data-access instead. Not triggered by default.
 ---
 
 # DOIP FDO access
@@ -13,10 +13,10 @@ The server is already running -- this skill only sends it requests.
 Only act if the request explicitly asks for one of the operations below. If
 it doesn't, do nothing in this skill.
 
-## Which skill -- this one or `episerve-platform-access`
+## Which skill -- this one or `episerve-data-access`
 
 This skill is **only** for operations that exist solely over the native DOIP
-protocol. Everything else goes to `episerve-platform-access`.
+protocol. Everything else goes to `episerve-data-access`.
 
 | You want to... | Skill |
 |---|---|
@@ -25,12 +25,13 @@ protocol. Everything else goes to `episerve-platform-access`.
 | **Write / replace** a component on an existing FDO (`update`) | **this skill** (only option) |
 | **Invoke** a server-side workflow (e.g. `equation_extraction`) | **this skill** (only option) |
 | `hello` / `list_ops`; purge the manifest cache | **this skill** (only option) |
-| List components / download a component **at latest version** | **`episerve-platform-access`** -- HTTP gateway, streamed, better for large files. Only fall back to this skill's `retrieve` if that gateway is unreachable. |
-| Catalog listings, CKAN record, `health`, trigger a model run | **`episerve-platform-access`** -- none of those are DOIP operations |
+| List components / download a component **at latest version** | **`episerve-data-access`** -- HTTP gateway, streamed, better for large files. Only fall back to this skill's `retrieve` if that gateway is unreachable. |
+| Catalog listings, CKAN record, `health` | **`episerve-data-access`** -- none of those are DOIP operations |
+| Trigger a model run | **`episerve-model-runs`** |
 
 Rule of thumb: if you don't need a **version**, a **write**, or an
 **invoke / purge / hello**, you don't need this skill -- use
-`episerve-platform-access`.
+`episerve-data-access`.
 
 ## Connection
 
@@ -96,7 +97,7 @@ returns as `id`; take it from there or from a metadata `retrieve` rather
 than hand-building it (the un-stripped `components/...` form 404s), and no
 extension is added automatically. A component `retrieve` here requires
 `--output` (binary content can't share stdout with the envelope); for a
-plain latest-version download prefer `episerve-platform-access` (it
+plain latest-version download prefer `episerve-data-access` (it
 streams).
 
 ## Reads

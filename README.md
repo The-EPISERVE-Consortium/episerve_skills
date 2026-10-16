@@ -5,11 +5,15 @@ platform. Each skill is a `skills/<name>/SKILL.md` (Agent Skills format: `name` 
 `description` frontmatter, then instructions), so the same files work in Claude Code,
 Codex, pi and other agents that read `SKILL.md`.
 
-| Skill | Use it to |
-|---|---|
-| [`episerve-platform-access`](skills/episerve-platform-access/SKILL.md) | check platform health, list datasets / models / model runs, read a CKAN record, download a component (latest version), trigger a model run — via the `episerve` CLI |
-| [`episerve-benchmarks`](skills/episerve-benchmarks/SKILL.md) | list benchmarks, read leaderboards, get the run spec, add a model run to a leaderboard, design and finalize benchmarks — via `episerve benchmark …` (client v0.1.14 or newer) |
-| [`doip-fdo-access`](skills/doip-fdo-access/SKILL.md) | native DOIP 2.0 operations on an FDO: version history, version-pinned retrieve, update, invoke, purge — via `episerve-doip-cli` |
+| Skill | Use it to | Risk |
+|---|---|---|
+| [`episerve-data-access`](skills/episerve-data-access/SKILL.md) | check health, list datasets / models / runs, read a CKAN record, list and download components (latest version) — `episerve` CLI | read-only |
+| [`episerve-model-runs`](skills/episerve-model-runs/SKILL.md) | start a forecast model run, follow its status, fetch the predictions — `episerve trigger-model-run`, `list runs`, `run show` | uses cluster resources, not undoable |
+| [`episerve-benchmarks`](skills/episerve-benchmarks/SKILL.md) | list benchmarks, read leaderboards, get the run spec, add a run to a leaderboard, design and finalize benchmarks — `episerve benchmark …` (client v0.1.14 or newer) | writes; `finalize` is irreversible |
+| [`doip-fdo-access`](skills/doip-fdo-access/SKILL.md) | native DOIP 2.0 operations on an FDO: version history, version-pinned retrieve, update, invoke, purge — `episerve-doip-cli` | writes to live FDOs |
+
+The skills are split by task and risk: finding and fetching is read-only, everything that starts
+or fixes something has its own skill with its own "only when asked" gate.
 
 ## Requirements
 
