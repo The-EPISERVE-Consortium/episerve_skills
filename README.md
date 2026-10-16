@@ -54,10 +54,23 @@ Only the variables of the skills you use are needed.
 | `DOIP_HOST`, `DOIP_PORT` (`3567`) | doip-fdo-access | native DOIP server |
 | `DOIP_UPDATE_TOKEN` | doip-fdo-access (`update` only) | write token |
 
-Linux / macOS: `export EPISERVE_API_URL=https://...` (put it in `~/.bashrc` / `~/.zshrc` to keep it).
-Windows PowerShell: `$env:EPISERVE_API_URL = "https://..."` for the current session, or
-`setx EPISERVE_API_URL "https://..."` to keep it (takes effect in new terminals).
-Set them **before** starting the agent (Claude Code, Codex, ...), otherwise it will not see them.
+Linux / macOS: add the variables to `~/.bashrc` (or `~/.zshrc`), then open a new terminal:
+```bash
+export EPISERVE_API_URL=<api-server-url>
+export EPISERVE_CKAN_URL=<ckan-url>
+export EPISERVE_DOIP_URL=<doip-http-gateway-url>
+export DOIP_HOST=<doip-server-host>
+export DOIP_PORT=<doip-server-port>
+```
+Windows PowerShell: `$env:EPISERVE_API_URL = "<api-server-url>"` for the current session, or
+`setx EPISERVE_API_URL "<api-server-url>"` to keep it (takes effect in new terminals).
+
+Get the values from your EPISERVE administrator. Set them **before** starting the agent
+(Claude Code, Codex, ...), otherwise it will not see them.
+
+Do not put `EPISERVE_API_KEY` or `DOIP_UPDATE_TOKEN` in a profile file: the API token expires after one day
+(run `episerve login`, it saves the token to a `.env` file in the current directory, which `episerve` reads),
+and the DOIP write token is a secret.
 
 ### 3. Check that it works
 
