@@ -97,7 +97,7 @@ observation before `test_start`), `input_filename` (default `input.parquet`).
 every benchmark gets ONE generated input file (and a reference file) when it is finalized, and
 `benchmark run-spec` returns it (`input_columns`, `covariate_columns`, empty SQL). Use it as it is: a run only
 counts when it read exactly that file. Download the files with
-`curl $EPISERVE_API_URL/benchmarks/<id>/data/input -o input.parquet` (also `.../data/reference`).
+the DOIP URLs in `generated_files` of `episerve benchmark get <id>` (`input.url`, `reference.url`; both objects are open and also in CKAN).
 Take `dataset_qid` from `episerve list datasets`, never invent one.
 
 Rules for the writes:
