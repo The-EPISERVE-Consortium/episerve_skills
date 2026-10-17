@@ -101,6 +101,8 @@ Rules for the writes:
 - **`finalize` is irreversible**: it pins whatever the lakeFS head is at that
   moment and makes the benchmark immutable. A final benchmark is changed only
   by `copy` (new draft). Only finalize when the request says to.
+  Only the **creator** of a draft can finalize it (the account that created or copied it);
+  anyone else gets `403` -- report that instead of trying another way.
 - `retire` hides the benchmark from the lists and blocks new entries; its
   leaderboard stays readable. Only when asked.
 - There is no delete: removal and retirement are soft.
