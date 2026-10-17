@@ -95,6 +95,13 @@ episerve benchmark remove-entry 3 <entry-id>           # soft delete; add-entry 
 series needs, e.g. region and age group; `filter_column`/`filter_value` still work for one),
 `history_start`, `history_end` (empty = the last
 observation before `test_start`), `input_filename` (default `input.parquet`).
+`covariates` (optional list of further data sources, each
+`{"name", "dataset_qid", "date_column", "columns": [..], "filters": [{"column", "value"}],
+"aggregation": "mean"|"sum"|"last"}`) adds columns from other datasets to the model input;
+the server then builds ONE input file when the benchmark is finalized, and `benchmark run-spec`
+returns that file (`input_columns`, `covariate_columns`, empty SQL). Use it as it is: a run only
+counts when it read exactly that file. Download the files with
+`curl $EPISERVE_API_URL/benchmarks/<id>/data/input -o input.parquet` (also `.../data/reference`).
 Take `dataset_qid` from `episerve list datasets`, never invent one.
 
 Rules for the writes:
