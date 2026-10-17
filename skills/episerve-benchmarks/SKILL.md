@@ -37,8 +37,8 @@ is best). Output is JSON on stdout; the banner goes to stderr. A leaderboard
 only reads stored scores -- it makes no call to the data stores.
 
 `run-spec` returns `benchmark_id`, `dataset_qid`, `data_commit`,
-`input_data_files` (`[[url-with-?version=<data_commit>, file-name]]`),
-`data_transformation_sql`, `config` (e.g. `prediction_length`,
+`input_data_files` (`[[generated-input-file-URI-with-?version=, file-name]]`),
+`data_transformation_sql` (empty: the file is used as it is), `input_columns`, `config` (e.g. `prediction_length`,
 `prediction_offset`) and the test range. It has the shape of a model-run
 request but lacks the model.
 
@@ -47,23 +47,19 @@ request but lacks the model.
 1. `episerve benchmark run-spec <id> > spec.json`
 2. Add `model_image` (and `model_tag`) and the model's own `config` keys to
    `spec.json`, keeping the benchmark's `input_data_files` and
-   `data_transformation_sql` **unchanged** -- the input must be read at the
-   pinned commit or the run is refused later. `run-spec` fills only
+   `data_transformation_sql` **unchanged** -- the input file must be read as it
+   is, in that version, or the run is refused later. `run-spec` fills only
    `prediction_length` and `prediction_offset`; the model's other required keys
-   (commonly `history_length`: the number of input rows after the SQL) are yours
+   (commonly `history_length`: the number of input rows) are yours
    to add -- see "The config" in `episerve-model-runs`.
 3. `episerve trigger-model-run spec.json` (a real cluster job -- only when the
    request asks; see `episerve-model-runs`). Wait for the run to finish
    and note its run QID.
 4. `episerve benchmark add-entry <id> <run-QID>` (needs a token).
 
-A run can be added only if it succeeded, has the benchmark's dataset as
-**exactly one** input read at `?version=<data_commit>`, its history ends
-before `test_start` (read from the applied SQL: a single upper date bound,
-written as `DATE 'YYYY-MM-DD'`, `'YYYY-MM-DD'` or `CAST(col AS DATE)`; SQL with
-`OR`, `NOT`, `UNION`/`EXCEPT`/`INTERSECT` or `INTERVAL` is not scorable), the
-benchmark's filter appears as an equality condition, and it forecasts every
-observed date in the reference range. Coverage and interval score need the
+A run can be added only if it succeeded, read exactly the benchmark's generated
+input file in the stored version and nothing else, and forecasts every observed
+date in the reference range. Coverage and interval score need the
 `<target>_q10` and `<target>_q90` columns in `predictions.tsv`.
 
 A just-finished run can take up to about an hour to appear in the catalog:
@@ -81,7 +77,7 @@ expired -- report it, don't retry in a loop.
 episerve benchmark drafts                              # list drafts
 episerve benchmark create benchmark.json               # or an inline JSON string
 episerve benchmark update 3 '{"test_end": "2026-08-31"}'   # drafts only; null clears an optional field
-episerve benchmark check 3                             # read-only: problems, warnings, forecast length, SQL
+episerve benchmark check 3                             # read-only: problems, warnings, forecast length, generated columns
 episerve benchmark finalize 3
 episerve benchmark copy 3                              # new draft with the same definition
 episerve benchmark retire 3
@@ -98,8 +94,8 @@ observation before `test_start`), `input_filename` (default `input.parquet`).
 `covariates` (optional list of further data sources, each
 `{"name", "dataset_qid", "date_column", "columns": [..], "filters": [{"column", "value"}],
 "aggregation": "mean"|"sum"|"last"}`) adds columns from other datasets to the model input;
-the server then builds ONE input file when the benchmark is finalized, and `benchmark run-spec`
-returns that file (`input_columns`, `covariate_columns`, empty SQL). Use it as it is: a run only
+every benchmark gets ONE generated input file (and a reference file) when it is finalized, and
+`benchmark run-spec` returns it (`input_columns`, `covariate_columns`, empty SQL). Use it as it is: a run only
 counts when it read exactly that file. Download the files with
 `curl $EPISERVE_API_URL/benchmarks/<id>/data/input -o input.parquet` (also `.../data/reference`).
 Take `dataset_qid` from `episerve list datasets`, never invent one.
