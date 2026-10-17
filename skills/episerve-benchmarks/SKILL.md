@@ -6,7 +6,7 @@ description: Use only when the request explicitly asks about EPISERVE benchmarks
 # EPISERVE benchmarks
 
 A **benchmark** fixes one time series (a processed dataset QID, a target
-column, a date column and up to three equality filters), an **input
+column, a date column and any number of equality filters), an **input
 range** (what a model may see) and a **reference range** (`test_start` ..
 `test_end`, what forecasts are scored against), and pins ONE lakeFS commit of
 the data once it is final. A model run made from it is an **entry**: scored
@@ -90,7 +90,7 @@ episerve benchmark remove-entry 3 <entry-id>           # soft delete; add-entry 
 
 `create` JSON -- required: `name`, `dataset_qid`, `target_column`,
 `date_column`, `test_start`, `test_end` (dates `YYYY-MM-DD`); optional:
-`description`, `filters` (a list of up to three equality filters
+`description`, `filters` (a list of equality filters
 `{"column": ..., "value": ...}` that together select a single series; use as many as the
 series needs, e.g. region and age group; `filter_column`/`filter_value` still work for one),
 `history_start`, `history_end` (empty = the last
