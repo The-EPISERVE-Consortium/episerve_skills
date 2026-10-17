@@ -46,9 +46,11 @@ request but lacks the model.
 
 1. `episerve benchmark run-spec <id> > spec.json`
 2. Add `model_image` (and `model_tag`) and the model's own `config` keys to
-   `spec.json`, keeping the benchmark's `input_data_files` and
-   `data_transformation_sql` **unchanged** -- the input file must be read as it
-   is, in that version, or the run is refused later. `run-spec` fills only
+   `spec.json`, keeping the benchmark's `input_data_files` **unchanged** -- the input file must
+   be read in that version, and nothing else, or the run is refused later. A
+   `data_transformation_sql` on that file is allowed (e.g. to leave out covariate
+   columns: `SELECT "date", "target" FROM df`); the leaderboard then shows the
+   columns the run used. `run-spec` fills only
    `prediction_length` and `prediction_offset`; the model's other required keys
    (commonly `history_length`: the number of input rows) are yours
    to add -- see "The config" in `episerve-model-runs`.
