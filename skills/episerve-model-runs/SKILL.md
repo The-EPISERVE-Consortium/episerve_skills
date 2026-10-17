@@ -8,7 +8,9 @@ description: Use only when the request explicitly asks to start a forecast model
 Start a forecast model on the platform and follow it to its result, through
 the `episerve` CLI (same binary, connection variables and token as
 `episerve-data-access`; read that skill for `list`, `item` and the variables).
-Starting a run needs the **daily-rotating** `EPISERVE_API_KEY`.
+Starting a run needs a personal `EPISERVE_API_KEY` (valid for one day) of a user with the right `runs`.
+In the task runner it is already set. If a write answers `401`, the token is missing or expired; if `403`,
+the user lacks the right `runs`. Report that instead of guessing.
 
 Only act if the request explicitly asks to start a run (wording like "trigger
 a model run for ...", "forecast X with the timesfm model") or to check or

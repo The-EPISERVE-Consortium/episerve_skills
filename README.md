@@ -50,7 +50,8 @@ Only the variables of the skills you use are needed.
 | `EPISERVE_API_URL` | data-access, model-runs, benchmarks | API server base URL |
 | `EPISERVE_CKAN_URL` | data-access | CKAN base URL (`item show`) |
 | `EPISERVE_DOIP_URL` | data-access, model-runs | DOIP HTTP gateway base URL (list / download components) |
-| `EPISERVE_API_KEY` | model-runs, benchmarks (writes) | Bearer token, **valid for one day** (`episerve login`); not needed for reads |
+| `EPISERVE_API_KEY` | model-runs, benchmarks (writes) | Personal bearer token, **valid for one day** (`episerve login`); the user needs the right `runs` (model runs) or `benchmarks` (benchmarks); not needed for reads |
+| `EPISERVE_USERNAME`, `EPISERVE_PASSWORD` | `episerve login` | the account's email and password, so `login` needs no flags |
 | `DOIP_HOST`, `DOIP_PORT` (`3567`) | doip-fdo-access | native DOIP server |
 | `DOIP_UPDATE_TOKEN` | doip-fdo-access (`update` only) | write token |
 
