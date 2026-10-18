@@ -66,7 +66,7 @@ export DOIP_PORT=<doip-server-port>
 Windows PowerShell: `$env:EPISERVE_API_URL = "<api-server-url>"` for the current session, or
 `setx EPISERVE_API_URL "<api-server-url>"` to keep it (takes effect in new terminals).
 
-Get the values from your EPISERVE administrator. Set them **before** starting the agent
+For the public platform use `https://api.episerve.zib.de`, `https://data.episerve.zib.de` and `https://doip.episerve.zib.de` (DOIP host `doip.episerve.zib.de`, port `3567`; `episerve-doip-cli` uses these by default, `episerve` has no default). For another deployment, ask its administrator. Set them **before** starting the agent
 (Claude Code, Codex, ...), otherwise it will not see them.
 
 Do not put `EPISERVE_API_KEY` or `DOIP_UPDATE_TOKEN` in a profile file: the API token expires after one day

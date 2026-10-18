@@ -22,6 +22,13 @@ This skill needs the `episerve` CLI. Check it with `command -v episerve && epise
 date, 1 = a newer release exists, 2 = check failed). If it is missing or outdated, say so and give the user the
 install line from `episerve-data-access` ("Before you start"); do not install anything unless the request asks you to.
 
+## Login (needed for writes)
+
+Writes need a personal token that expires after one day. Get it with `episerve login` (the account's email and
+password, from `EPISERVE_USERNAME` / `EPISERVE_PASSWORD` or the flags `-u` / `-p`); it saves the token as
+`EPISERVE_API_KEY` in `./.env`, which `episerve` reads. `episerve login status` shows when it expires. In the task
+runner the token is already set. If there are no credentials, say so; do not guess them.
+
 ## Find the pieces first
 
 ```bash
@@ -88,7 +95,7 @@ retry in a loop.
 ## Follow it
 
 The run appears in the catalog under its run **QID** only after it finishes,
-which can take up to about an hour after completion. Until then it is not
+which takes about a minute after completion. Until then it is not
 findable by QID; `trigger-model-run`'s `run_id` is a different identifier.
 
 ```bash

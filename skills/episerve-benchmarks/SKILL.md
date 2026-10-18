@@ -70,13 +70,18 @@ input file in the stored version and nothing else, and forecasts every observed
 date in the reference range. Coverage and interval score need the
 `<target>_q10` and `<target>_q90` columns in `predictions.tsv`.
 
-A just-finished run can take up to about an hour to appear in the catalog:
-an `add-entry` for an unknown run QID fails with 404 -- wait and retry later,
+A just-finished run appears in the catalog after about a minute:
+an `add-entry` for an unknown run QID fails with 404 -- wait a minute and retry,
 not in a tight loop. If the run is refused (422), the reason is printed and
 nothing is stored; report it verbatim. A run that is already on the board
 returns 409.
 
 ## Writes (need a token)
+
+Writes need a personal token that expires after one day. Get it with `episerve login` (the account's email and
+password, from `EPISERVE_USERNAME` / `EPISERVE_PASSWORD` or the flags `-u` / `-p`); it saves the token as
+`EPISERVE_API_KEY` in `./.env`, which `episerve` reads. `episerve login status` shows when it expires. In the task
+runner the token is already set. If there are no credentials, say so; do not guess them.
 
 All need `EPISERVE_API_KEY` (or `--api-key`); `401`/`403` means missing or
 expired -- report it, don't retry in a loop.

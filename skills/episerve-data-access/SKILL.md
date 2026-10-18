@@ -65,6 +65,17 @@ The `episerve` binary reads all of these itself:
 | `EPISERVE_DOIP_URL` | DOIP **HTTP gateway** base URL (`item list-components`, `item download`) |
 | `EPISERVE_API_KEY` | Bearer token for the API server. **Daily-rotating** (the api-server issues a token that expires each day). Not needed for the reads in this skill; `episerve-model-runs` and the write commands of `episerve-benchmarks` need it. |
 
+For the public EPISERVE platform the values are:
+
+```bash
+export EPISERVE_API_URL=https://api.episerve.zib.de
+export EPISERVE_CKAN_URL=https://data.episerve.zib.de
+export EPISERVE_DOIP_URL=https://doip.episerve.zib.de
+```
+
+`episerve` has no built-in default: without these it tries a placeholder host and fails with a connection error.
+The reads in this skill need no login.
+
 If an env var needed for what the request asked is unset or empty, that's a
 real failure -- say so explicitly in your final summary rather than silently
 skipping the call. An `HTTP 401`/`403` on stderr means the token is missing
