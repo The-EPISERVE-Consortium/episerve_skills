@@ -21,6 +21,12 @@ in `episerve-data-access`; read that skill for `list` and `item`, and
 Only act if the request explicitly asks. Reading is harmless; every write
 below is only done when the request says so.
 
+## Before you start
+
+This skill needs the `episerve` CLI. Check it with `command -v episerve && episerve --cli-version` (exit 0 = up to
+date, 1 = a newer release exists, 2 = check failed). If it is missing or outdated, say so and give the user the
+install line from `episerve-data-access` ("Before you start"); do not install anything unless the request asks you to.
+
 ## Reads (no login needed)
 
 ```bash

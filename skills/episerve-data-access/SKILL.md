@@ -34,6 +34,25 @@ If a task needs both (e.g. "list the runs, then fetch run Q...'s output at
 commit abc123"), use this skill for the catalog part and `doip-fdo-access`
 for the version-pinned fetch.
 
+## Before you start
+
+Check that the CLI is installed and current:
+
+```bash
+command -v episerve && episerve --cli-version   # exit 0 = up to date, 1 = a newer release exists, 2 = check failed
+```
+
+If `episerve` is not found, or the check reports a newer release, say so in your answer and give the user the
+install line below. Do not download or install anything unless the request asks you to.
+
+```bash
+# Linux (use episerve-client-macos on a Mac); ~/.local/bin must be on PATH
+curl -fsSL -o ~/.local/bin/episerve https://github.com/The-EPISERVE-Consortium/episerve_client/releases/latest/download/episerve-client-linux && chmod +x ~/.local/bin/episerve
+```
+
+Windows: download `episerve-client-windows.exe` from https://github.com/The-EPISERVE-Consortium/episerve_client/releases/latest, rename it to `episerve.exe` and put it in a folder
+on the `PATH`. Then confirm that the variables in the Connection table below are set (`printenv <name>`) and name the missing ones.
+
 ## Connection
 
 Expected in the environment -- don't ask for credentials, don't guess a host.

@@ -33,6 +33,25 @@ Rule of thumb: if you don't need a **version**, a **write**, or an
 **invoke / purge / hello**, you don't need this skill -- use
 `episerve-data-access`.
 
+## Before you start
+
+Check that the CLI is installed and current:
+
+```bash
+command -v episerve-doip-cli && episerve-doip-cli --cli-version   # exit 0 = up to date, 1 = a newer release exists, 2 = check failed
+```
+
+If `episerve-doip-cli` is not found, or the check reports a newer release, say so in your answer and give the user the
+install line below. Do not download or install anything unless the request asks you to.
+
+```bash
+# Linux (use episerve-doip-cli-macos on a Mac); ~/.local/bin must be on PATH
+curl -fsSL -o ~/.local/bin/episerve-doip-cli https://github.com/The-EPISERVE-Consortium/episerve_doip_server/releases/latest/download/episerve-doip-cli-linux && chmod +x ~/.local/bin/episerve-doip-cli
+```
+
+Windows: download `episerve-doip-cli-windows.exe` from https://github.com/The-EPISERVE-Consortium/episerve_doip_server/releases/latest, rename it to `episerve-doip-cli.exe` and put it in a folder
+on the `PATH`. Then confirm that the variables in the Connection table below are set (`printenv <name>`) and name the missing ones.
+
 ## Connection
 
 Expected in the environment -- don't guess a host:
