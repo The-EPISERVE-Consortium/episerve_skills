@@ -87,7 +87,10 @@ on failure:
 ```
 
 and the exit code is `0` on `ok:true`, `1` on `ok:false`. Parse it with `jq`;
-check `.ok` before trusting `.result`.
+check `.ok` before trusting `.result`. `ok:true` only means the server answered: a failed `retrieve` (for example
+an unknown QID) can still come back `ok:true` with the error inside the payload,
+`{"result": {"metadata_blocks": [{"error": "ProtocolError", "message": "..."}]}}`. Always look for an
+`error` / `message` in `result.metadata_blocks` as well, and treat it as a failure.
 
 ```bash
 DOIP="episerve-doip-cli --host $DOIP_HOST --port $DOIP_PORT --force-json-output"
@@ -141,7 +144,7 @@ $DOIP --action update --object-id Q1748526042817 \
   unset the envelope comes back `ok:false` with an authorization error --
   report that plainly, don't skip silently and don't fabricate success.
 - Pass a correct `--media-type`; the default is `application/octet-stream`.
-- Confirm the returned envelope is `ok:true` before claiming success.
+- Confirm the returned envelope is `ok:true` and its `metadata_blocks` hold no `error` before claiming success.
 
 ## `invoke` and `purge`
 
@@ -153,8 +156,8 @@ $DOIP --action update --object-id Q1748526042817 \
 ## Verifying
 
 Before your final message claims a DOIP call succeeded: confirm the envelope
-on stdout was `ok:true` and carried the `result` you expected (metadata
-blocks, a versions list, a saved file, an update ack). An `ok:false`
+on stdout was `ok:true`, that `result.metadata_blocks` (if present) holds no `error`, and that it carried the
+`result` you expected (metadata blocks, a versions list, a saved file, an update ack). An `ok:false`
 envelope, a non-zero exit, or a `ConnectionError` in `.error` is a real
 failure -- quote it in your summary rather than reporting the operation as
 done.

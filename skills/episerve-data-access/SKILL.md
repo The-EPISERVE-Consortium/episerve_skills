@@ -96,12 +96,13 @@ episerve item download Q1748526042817 output/predictions.tsv \
   -o ./predictions.tsv
 ```
 
-QIDs have the form `Q<unix-ts><3 digits>` -- never invent one; take it from
+A QID is `Q` followed by digits (13 in practice). Treat it as an opaque string -- never invent one; take it from
 prior `list` / `item list-components` output or from the request.
 
 The component id for `item download` is exactly what `item
 list-components` returns as `id` -- the FDO `@id` with the leading
-`components/` stripped (e.g. `output/predictions.tsv`, `input/config.json`).
+`components/` stripped. A model run's ids look like `output/predictions.tsv` or `input/config.json`; a dataset's
+is usually just a file name (e.g. `COVID-19-Faelle_7-Tage-Inzidenz_Bundeslaender.parquet`).
 Passing the un-stripped `components/...` form gets a 404. Always copy the id
 from the listing rather than constructing it.
 
