@@ -13,7 +13,7 @@ the data once it is final. A model run made from it is an **entry**: scored
 once when added, then ranked on the benchmark's **leaderboard**.
 
 This skill uses the latest `episerve` CLI release. If `episerve benchmark -h`
-fails, the installed client is outdated -- say so and ask for an update rather	han working around it.
+fails, the installed client is outdated -- say so and ask for an update rather than working around it.
 Connection variables and the daily-rotating `EPISERVE_API_KEY` are the same as
 in `episerve-data-access`; read that skill for `list` and `item`, and
 `episerve-model-runs` for starting a run.
@@ -99,7 +99,7 @@ observation before `test_start`), `input_filename` (default `input.parquet`).
 every benchmark gets ONE generated input file (and a reference file) when it is finalized, and
 `benchmark run-spec` returns it (`input_columns`, `covariate_columns`, empty SQL). Use it as it is: a run only
 counts when it read exactly that file. Download the files with
-the DOIP URLs in `generated_files` of `episerve benchmark get <id>` (`input.url`, `reference.url`; both objects are open and also in CKAN).
+the DOIP URLs in `generated_files` of `episerve benchmark show <id>` (`input.url`, `reference.url`; both objects are open and also in CKAN).
 Take `dataset_qid` from `episerve list datasets`, never invent one.
 
 Rules for the writes:
