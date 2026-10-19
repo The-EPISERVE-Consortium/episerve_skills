@@ -118,6 +118,30 @@ output directory the task specifies, or the current directory). After a
 download, `ls -la` the file to confirm it arrived with non-zero size. Never
 report a file as downloaded without checking.
 
+## Reading only part of a large file
+
+For a Parquet (or CSV/TSV) component you often need only some columns or rows. The DOIP HTTP gateway supports
+HTTP range requests, so DuckDB can query the file in place and fetch only the bytes it needs, instead of
+downloading it whole with `item download`:
+
+```python
+# pip install duckdb
+import os, duckdb
+url = f"{os.environ['EPISERVE_DOIP_URL']}/doip/retrieve/Q6940002821235/forecast.parquet"
+print(duckdb.sql(f"""SELECT time, "temperature_2m_mean (°C)" FROM read_parquet('{url}')
+                     WHERE time >= '2025-10-19'""").df())
+```
+
+- The URL is `$EPISERVE_DOIP_URL/doip/retrieve/<QID>/<component id>`, with the component id exactly as listed by
+  `item list-components`. Use `read_csv(...)` for `.tsv` / `.csv`.
+- Look at the columns first with `DESCRIBE SELECT * FROM read_parquet('<url>')`. Name the columns you need
+  instead of `*` and add a `WHERE` / `LIMIT`: the less you select, the less is read. How much is saved depends
+  on how the file is stored; a small file is mostly read whole anyway.
+- This needs the `duckdb` Python package. If it is not installed, say so and ask before installing it; otherwise
+  fall back to `item download` and filter the local file.
+- Restricted datasets answer 401/403 without a signed link; report that.
+- Check what you got (row count, first and last date) before you report a result from the subset.
+
 ## Verifying
 
 Before your final message claims a platform call succeeded: confirm you saw

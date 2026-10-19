@@ -58,6 +58,8 @@ curl -fsS -X POST $DOIP/doip/purge/Q1748526042817
   contain `/`.
 - Restricted datasets answer 401/403 without a signed link; report it.
 - Large files: curl streams to disk; `Range` requests are supported.
+- Partial reads: DuckDB can query a component in place over range requests and also accepts the pinned URL
+  (`.../<component>?version=<commit-id>`); see "Reading only part of a large file" in `episerve-data-access-rest-fallback`.
 - `purge` is the one write here. The gateway may require authorization for it;
   on 401/403 report it verbatim (the purge was not done).
 
