@@ -45,6 +45,9 @@ command -v episerve && episerve --cli-version   # exit 0 = up to date, 1 = a new
 If `episerve` is not found, or the check reports a newer release, say so in your answer and give the user the
 install line below. Do not download or install anything unless the request asks you to.
 
+If the binary is not found (or cannot run) and the user does not want to install it, use
+**`episerve-data-access-rest-fallback`**: the same reads with `curl`.
+
 ```bash
 # Linux (use episerve-client-macos on a Mac); ~/.local/bin must be on PATH
 curl -fsSL -o ~/.local/bin/episerve https://github.com/The-EPISERVE-Consortium/episerve_client/releases/latest/download/episerve-client-linux && chmod +x ~/.local/bin/episerve

@@ -15,6 +15,22 @@ Codex, pi and other agents that read `SKILL.md`.
 The skills are split by task and risk: finding and fetching is read-only, everything that starts
 or fixes something has its own skill with its own "only when asked" gate.
 
+### REST fallbacks (no binary needed)
+
+Each skill has a `*-rest-fallback` variant that does the same with `curl` and `jq` against the
+platform's HTTP endpoints. The CLI skills point to it when the binary is missing and the user
+does not want to install it.
+
+| Fallback | Backends | Not covered |
+|---|---|---|
+| `episerve-data-access-rest-fallback` | API server, CKAN `package_show`, DOIP HTTP gateway | nothing |
+| `episerve-model-runs-rest-fallback` | API server (`/auth/token`, `/model-runs`), DOIP gateway for results | nothing |
+| `episerve-benchmarks-rest-fallback` | API server (`/benchmarks*`) | nothing |
+| `doip-fdo-access-rest-fallback` | DOIP HTTP gateway: `retrieve`, `versions`, `?version=`, `purge` | `update`, `invoke`, `hello`, `list_ops` (native DOIP only) |
+
+They need `curl` and `jq`, and the same URLs (the public ones are built in as defaults). API docs:
+`https://api.episerve.zib.de/docs`, `https://doip.episerve.zib.de/docs`.
+
 ## Requirements
 
 The skills do not talk to the platform themselves; they drive two command-line tools. The agent

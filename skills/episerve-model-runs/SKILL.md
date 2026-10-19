@@ -21,6 +21,8 @@ fetch an existing one. If it doesn't, do nothing in this skill.
 This skill needs the `episerve` CLI. Check it with `command -v episerve && episerve --cli-version` (exit 0 = up to
 date, 1 = a newer release exists, 2 = check failed). If it is missing or outdated, say so and give the user the
 install line from `episerve-data-access` ("Before you start"); do not install anything unless the request asks you to.
+If the binary is not found and the user does not want to install it, use **`episerve-model-runs-rest-fallback`**
+(the same steps with `curl`).
 
 ## Login (needed for writes)
 

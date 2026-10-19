@@ -1,6 +1,6 @@
 {
   "name": "episerve-skills",
   "description": "Agent skills for reaching the EPISERVE platform: catalog/API access and native DOIP/FDO operations.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/The-EPISERVE-Consortium/episerve_skills"
 }

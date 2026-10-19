@@ -44,6 +44,10 @@ command -v episerve-doip-cli && episerve-doip-cli --cli-version   # exit 0 = up 
 If `episerve-doip-cli` is not found, or the check reports a newer release, say so in your answer and give the user the
 install line below. Do not download or install anything unless the request asks you to.
 
+If the binary is not found (or cannot run) and the user does not want to install it, use
+**`doip-fdo-access-rest-fallback`** for `retrieve`, `versions`, version-pinned component download and `purge`
+over the HTTP gateway. `update`, `invoke`, `hello` and `list_ops` have no HTTP equivalent and need the binary.
+
 ```bash
 # Linux (use episerve-doip-cli-macos on a Mac); ~/.local/bin must be on PATH
 curl -fsSL -o ~/.local/bin/episerve-doip-cli https://github.com/The-EPISERVE-Consortium/episerve_doip_server/releases/latest/download/episerve-doip-cli-linux && chmod +x ~/.local/bin/episerve-doip-cli
